@@ -16,3 +16,24 @@ In order to create the user and database for this project, it is necessary to ex
 psql -U postgres postgres -f init-db/script.sql
 
 ```
+
+### Build
+
+To create the jar, run the following command
+
+```
+mvn clean package
+```
+
+### Run Application
+
+To start the application, run the following command
+
+```
+java -jar target/rmm-services.jar 
+```
+
+### Stop Application
+
+To stop the application, just press CTRL + C
+
