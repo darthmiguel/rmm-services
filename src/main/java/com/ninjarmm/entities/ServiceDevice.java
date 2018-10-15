@@ -3,11 +3,11 @@ package com.ninjarmm.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "service_customer", indexes = {
+@Table(name = "service_device", indexes = {
   @Index(name = "id_index", columnList = "id", unique = true),
-  @Index(name = "device_service_index", columnList = "device_id, service_id", unique = true)
+  @Index(name = "service_device_index", columnList = "device_id, service_id", unique = true)
 })
-public class AvailableServiceDevice {
+public class ServiceDevice {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class AvailableServiceDevice {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "service_id", nullable = false, referencedColumnName = "id")
-  private AvailableService service;
+  private Service service;
 
   public long getId() {
     return id;
@@ -38,11 +38,11 @@ public class AvailableServiceDevice {
     this.device = device;
   }
 
-  public AvailableService getService() {
+  public Service getService() {
     return service;
   }
 
-  public void setService(AvailableService service) {
+  public void setService(Service service) {
     this.service = service;
   }
 }

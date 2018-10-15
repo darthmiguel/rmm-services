@@ -28,6 +28,9 @@ public class Customer {
   @Column(name = "name", nullable = false)
   private String name;
 
+  @Column(name = "enabled", nullable = false)
+  private boolean enabled;
+
   public long getId() {
     return id;
   }
@@ -58,5 +61,13 @@ public class Customer {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
   }
 }

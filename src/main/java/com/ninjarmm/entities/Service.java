@@ -1,25 +1,30 @@
 package com.ninjarmm.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "service", indexes = {
   @Index(name = "id_index", columnList = "id", unique = true),
-  @Index(name = "name_type_index", columnList = "name, type_id", unique = true)
+  @Index(name = "service_type_device_type_index", columnList = "service_type_id, device_type_id", unique = true)
 })
-public class AvailableService {
+public class Service {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false, unique = true)
+  @JsonIgnore
   private Long id;
 
-  @Column(name = "name", nullable = false)
-  private String name;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "service_type_id", nullable = false, referencedColumnName = "id")
+  private ServiceType serviceType;
+
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "type_id", nullable = false, referencedColumnName = "id")
-  private DeviceType type;
+  @JoinColumn(name = "device_type_id", nullable = false, referencedColumnName = "id")
+  private DeviceType deviceType;
 
   @Column(name = "cost")
   private double cost;
@@ -32,20 +37,20 @@ public class AvailableService {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public ServiceType getServiceType() {
+    return serviceType;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setServiceType(ServiceType serviceType) {
+    this.serviceType = serviceType;
   }
 
-  public DeviceType getType() {
-    return type;
+  public DeviceType getDeviceType() {
+    return deviceType;
   }
 
-  public void setType(DeviceType type) {
-    this.type = type;
+  public void setDeviceType(DeviceType type) {
+    this.deviceType = type;
   }
 
   public double getCost() {

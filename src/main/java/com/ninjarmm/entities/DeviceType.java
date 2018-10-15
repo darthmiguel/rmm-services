@@ -14,19 +14,18 @@ import javax.persistence.*;
 public class DeviceType {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false, unique = true)
   @JsonIgnore
-  private long id;
+  private Integer id;
 
   @Column(name = "name", nullable = false, unique = true)
   private String name;
 
-  public long getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 

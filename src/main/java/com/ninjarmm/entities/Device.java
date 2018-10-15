@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "device", indexes = {
@@ -25,14 +26,27 @@ public class Device {
   private String systemName;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "type_id", nullable = false, referencedColumnName = "id", updatable = false)
+  @JoinColumn(name = "device_type_id", nullable = false, referencedColumnName = "id", updatable = false)
   @JsonProperty("device_type")
-  private DeviceType type;
+  private DeviceType deviceType;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "customer_id", nullable = false, referencedColumnName = "id", updatable = false)
   @JsonIgnore
   private Customer customer;
+
+  @ManyToMany(cascade =
+    {
+      CascadeType.DETACH,
+      CascadeType.MERGE,
+      CascadeType.REFRESH,
+      CascadeType.PERSIST
+    }, fetch=FetchType.EAGER, targetEntity = Service.class)
+  @JoinTable(
+    name = "service_device", joinColumns = {@JoinColumn(name = "device_id")},
+    inverseJoinColumns = {@JoinColumn(name = "service_id")}
+  )
+  private List<Service> serviceList;
 
   public Long getId() {
     return id;
@@ -42,8 +56,8 @@ public class Device {
     return systemName;
   }
 
-  public DeviceType getType() {
-    return type;
+  public DeviceType getDeviceType() {
+    return deviceType;
   }
 
   public Customer getCustomer() {
@@ -58,11 +72,19 @@ public class Device {
     this.systemName = systemName;
   }
 
-  public void setType(DeviceType type) {
-    this.type = type;
+  public void setDeviceType(DeviceType type) {
+    this.deviceType = type;
   }
 
   public void setCustomer(Customer customer) {
     this.customer = customer;
+  }
+
+  public List<Service> getServiceList() {
+    return serviceList;
+  }
+
+  public void setServiceList(List<Service> serviceList) {
+    this.serviceList = serviceList;
   }
 }
