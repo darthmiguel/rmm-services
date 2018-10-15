@@ -1,9 +1,9 @@
 package com.ninjarmm.controllers;
 
 import com.ninjarmm.Constants;
-import com.ninjarmm.entities.ServiceDevice;
-import com.ninjarmm.entities.ServiceDeviceContext;
+import com.ninjarmm.entities.*;
 import com.ninjarmm.exceptions.ServiceException;
+import com.ninjarmm.repositories.DeviceRepository;
 import com.ninjarmm.services.RegisterServiceToDeviceService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -23,13 +23,15 @@ import java.util.List;
 @Component
 @RestController
 @RequestMapping("/service")
-public class AvailableServiceDeviceController {
+public class RegisteredServicesToDeviceController {
 
   @Autowired
-  private RegisterServiceToDeviceService availableServiceDeviceService;
+  private RegisterServiceToDeviceService registerServiceToDeviceService;
+
+  @Autowired DeviceRepository deviceRepository;
 
   @RequestMapping(value = "/{login}/getServices", method = RequestMethod.GET)
-  @ApiOperation(value = "retrieve all the devices for a given login")
+  @ApiOperation(value = "retrieve all the services per device for a given login")
   @ApiResponses({ @ApiResponse(code = 200, message = "Services per login retrieved") })
   public ResponseEntity<?> getByLogin(
     @ApiParam(value = "username") @PathVariable("login") String login,
@@ -39,25 +41,58 @@ public class AvailableServiceDeviceController {
     if( !principal.getName().equals(login)) {
       return new ResponseEntity<>(Constants.FORBIDDEN_MESSAGE, HttpStatus.FORBIDDEN);
     }
-    List<ServiceDevice> services;
+    List<RegisteredServicesResponse> registeredServices;
     if(StringUtils.isNotEmpty(login)){
-      services = availableServiceDeviceService.getAllByLogin(login);
+      registeredServices = registerServiceToDeviceService.getServices(login);
     }
     else{
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-    return new ResponseEntity<>(services, HttpStatus.FOUND);
+    return new ResponseEntity<>(registeredServices, HttpStatus.FOUND);
   }
 
   @RequestMapping(value = "/{login}/addService", method = RequestMethod.POST)
   @ApiOperation(value = "add service to a device")
   @ApiResponses({ @ApiResponse(code = 200, message = "Services per login retrieved") })
   public ResponseEntity<?> addService(
-    @ApiParam(value = "add service to a device") @RequestBody ServiceDeviceContext service) throws ServiceException {
-    ServiceDevice availableServiceDevice = availableServiceDeviceService.addService(service);
+    @ApiParam(value = "username") @PathVariable("login") String login,
+    @ApiParam(value = "add service to a device") @RequestBody ServiceDeviceContext service,
+    @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
+  ) throws ServiceException {
+    //check if the user its working with its own data
+    Device found = deviceRepository.findById(service.getDevice());
+    if(found != null &&
+      !(found.getCustomer().getLogin().equals(login) && principal.getName().equals(login))){
+      return new ResponseEntity<>(Constants.FORBIDDEN_MESSAGE, HttpStatus.FORBIDDEN);
+    }
+    ServiceResponse availableServiceDevice = registerServiceToDeviceService.addService(service);
     if(availableServiceDevice != null){
       return new ResponseEntity<>(availableServiceDevice, HttpStatus.CREATED);
     }
     return new ResponseEntity<>(service, HttpStatus.NOT_MODIFIED);
+  }
+
+  @RequestMapping(value = "/{login}/deleteService", method = RequestMethod.DELETE)
+  @ApiOperation(value = "Delete device")
+  @ApiResponses({ @ApiResponse(code = 200, message = "Device deleted")}
+  )
+  public ResponseEntity<?> deleteDevice(
+    @ApiParam(value = "registered service id") @RequestParam(value = "id") Long id,
+    @ApiParam(value = "username") @PathVariable("login") String login,
+    @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
+  )throws ServiceException{
+    //check if the user its working with its own data
+    Device found = deviceRepository.findById(id);
+    if(found != null &&
+      !(found.getCustomer().getLogin().equals(login) && principal.getName().equals(login))){
+      return new ResponseEntity<>(Constants.FORBIDDEN_MESSAGE, HttpStatus.FORBIDDEN);
+    }
+
+    //removes the device
+    boolean result = registerServiceToDeviceService.delete(id);
+    if(result){
+      return new ResponseEntity<>("The registered device with id " + id + " has been removed", HttpStatus.OK);
+    }
+    return new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
   }
 }
