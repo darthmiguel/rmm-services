@@ -1,18 +1,19 @@
 package com.ninjarmm.services;
 
-import com.ninjarmm.entities.Device;
-import com.ninjarmm.entities.DeviceContext;
+import com.ninjarmm.entities.AddDeviceBody;
+import com.ninjarmm.entities.DeviceResponse;
+import com.ninjarmm.entities.UpdateDeviceBody;
 import com.ninjarmm.exceptions.DeviceException;
 
 import java.util.List;
 
 public interface DeviceService {
 
-  List<Device> getAll(String login) throws DeviceException;
+  List<DeviceResponse> getAll(String login) throws DeviceException;
 
-  Device save(DeviceContext deviceContext) throws DeviceException;
+  DeviceResponse save(AddDeviceBody addDeviceBody, String login) throws DeviceException;
 
-  Device update(DeviceContext deviceContext) throws DeviceException;
+  DeviceResponse update(UpdateDeviceBody updateDeviceBody) throws DeviceException;
 
   boolean delete(Long id);
 
