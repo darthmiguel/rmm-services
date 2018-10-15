@@ -3,9 +3,12 @@ package com.ninjarmm.entities;
 public class ServiceResponse {
 
   public ServiceResponse(Service service){
+    this.id = service.getId();
     this.name = service.getServiceType().getName();
     this.cost = service.getCost();
   }
+
+  private Long id;
 
   private String name;
 
@@ -25,5 +28,13 @@ public class ServiceResponse {
 
   public void setCost(double cost) {
     this.cost = cost;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 }

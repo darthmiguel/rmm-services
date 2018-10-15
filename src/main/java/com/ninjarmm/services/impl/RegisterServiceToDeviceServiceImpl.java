@@ -68,16 +68,19 @@ public class RegisterServiceToDeviceServiceImpl implements RegisterServiceToDevi
   }
 
   @Override
-  public boolean delete(Long id) throws ServiceException{
-    ServiceDevice registeredService = registerServiceToDeviceRepository.findById(id);
+  public boolean delete(ServiceDeviceBody serviceDeviceBody) throws ServiceException{
+    ServiceDevice registeredService = registerServiceToDeviceRepository.findByServiceDevice(serviceDeviceBody.getService(), serviceDeviceBody.getDevice());
     if(registeredService != null && registeredService.getService().getServiceType().getId().equals(Constants.SERVICE_TYPE_DEVICE)){
       throw new ServiceException("It is not possible to remove the monthly cost of the device");
     }
+    if(registeredService == null){
+      throw new ServiceException("Service not found for the device");
+    }
     try{
-      registerServiceToDeviceRepository.delete(id);
+      registerServiceToDeviceRepository.delete(registeredService);
     }
     catch (EmptyResultDataAccessException e){
-      throw new ServiceException("The registered service with id " + id + " does not exist");
+      throw new ServiceException("The registered service does not exist");
     }
     return true;
   }

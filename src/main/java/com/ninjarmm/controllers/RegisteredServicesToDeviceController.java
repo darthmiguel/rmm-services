@@ -77,21 +77,21 @@ public class RegisteredServicesToDeviceController {
   @ApiResponses({ @ApiResponse(code = 200, message = "Device deleted")}
   )
   public ResponseEntity<?> deleteDevice(
-    @ApiParam(value = "Registered service id", required = true) @RequestParam(value = "id") Long id,
+    @ApiParam(value = "JSON containing the id of the service(service) and the id of the device(device)", required = true) @RequestBody ServiceDeviceBody serviceDeviceBody,
     @ApiParam(value = "username", required = true) @PathVariable("login") String login,
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
   )throws ServiceException{
     //check if the user its working with its own data
-    Device found = deviceRepository.findById(id);
+    Device found = deviceRepository.findById(serviceDeviceBody.getDevice());
     if(found != null &&
       !(found.getCustomer().getLogin().equals(login) && principal.getName().equals(login))){
       return new ResponseEntity<>(Constants.FORBIDDEN_MESSAGE, HttpStatus.FORBIDDEN);
     }
 
     //removes the device
-    boolean result = registerServiceToDeviceService.delete(id);
+    boolean result = registerServiceToDeviceService.delete(serviceDeviceBody);
     if(result){
-      return new ResponseEntity<>("The registered device with id " + id + " has been removed", HttpStatus.OK);
+      return new ResponseEntity<>("The service has been removed from the device", HttpStatus.OK);
     }
     return new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
   }

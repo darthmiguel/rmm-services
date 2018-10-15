@@ -11,7 +11,7 @@ public interface RegisterServiceToDeviceService {
 
   ServiceResponse addService(ServiceDeviceBody service) throws ServiceException;
 
-  boolean delete(Long id) throws ServiceException;
+  boolean delete(ServiceDeviceBody serviceDeviceBody) throws ServiceException;
 
   BillResponse getBill(String login) throws ServiceException;
 
