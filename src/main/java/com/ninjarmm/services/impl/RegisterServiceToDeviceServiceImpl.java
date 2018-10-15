@@ -1,36 +1,35 @@
 package com.ninjarmm.services.impl;
 
-import com.ninjarmm.entities.AvailableService;
-import com.ninjarmm.entities.AvailableServiceDevice;
-import com.ninjarmm.entities.AvailableServiceDeviceContext;
+import com.ninjarmm.entities.Service;
+import com.ninjarmm.entities.ServiceDevice;
+import com.ninjarmm.entities.ServiceDeviceContext;
 import com.ninjarmm.entities.Device;
 import com.ninjarmm.exceptions.ServiceException;
-import com.ninjarmm.repositories.AvailableServiceDeviceRepository;
-import com.ninjarmm.repositories.AvailableServiceRepository;
+import com.ninjarmm.repositories.RegisterServiceToDeviceRepository;
+import com.ninjarmm.repositories.ServiceRepository;
 import com.ninjarmm.repositories.DeviceRepository;
 import com.ninjarmm.services.AvailableServiceDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@org.springframework.stereotype.Service
 public class AvailableServiceServiceImpl implements AvailableServiceDeviceService {
 
 
   @Autowired
-  AvailableServiceDeviceRepository availableServiceDeviceRepository;
+  RegisterServiceToDeviceRepository availableServiceDeviceRepository;
 
   @Autowired
-  AvailableServiceRepository availableServiceRepository;
+  ServiceRepository availableServiceRepository;
 
   @Autowired
   DeviceRepository deviceRepository;
 
   @Override
-  public List<AvailableServiceDevice> getAllByLogin(String login) throws ServiceException {
-    List<AvailableServiceDevice> availableServices = availableServiceDeviceRepository.getAllByLogin(login);
+  public List<ServiceDevice> getAllByLogin(String login) throws ServiceException {
+    List<ServiceDevice> availableServices = availableServiceDeviceRepository.getAllByLogin(login);
     if(availableServices == null || availableServices.size() == 0){
       throw new ServiceException("There are no devices for user " + login);
     }
@@ -38,8 +37,8 @@ public class AvailableServiceServiceImpl implements AvailableServiceDeviceServic
   }
 
   @Override
-  public AvailableServiceDevice addService(AvailableServiceDeviceContext service) throws ServiceException {
-    AvailableService availableService = availableServiceRepository.findById(service.getService());
+  public ServiceDevice addService(ServiceDeviceContext service) throws ServiceException {
+    Service availableService = availableServiceRepository.findById(service.getService());
     if(availableService == null){
       throw new ServiceException("The available service with id " + service.getService() + " does not exist");
     }
@@ -47,7 +46,7 @@ public class AvailableServiceServiceImpl implements AvailableServiceDeviceServic
     if(device == null){
       throw new ServiceException("The device with id " + service.getDevice() + " does not exist");
     }
-    AvailableServiceDevice availableServiceDevice = new AvailableServiceDevice();
+    ServiceDevice availableServiceDevice = new ServiceDevice();
     availableServiceDevice.setDevice(device);
     availableServiceDevice.setService(availableService);
     try{
