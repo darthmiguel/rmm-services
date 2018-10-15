@@ -3,11 +3,9 @@ package com.ninjarmm.services.impl;
 import com.ninjarmm.Constants;
 import com.ninjarmm.entities.*;
 import com.ninjarmm.exceptions.DeviceException;
-import com.ninjarmm.exceptions.ServiceException;
 import com.ninjarmm.repositories.*;
 import com.ninjarmm.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

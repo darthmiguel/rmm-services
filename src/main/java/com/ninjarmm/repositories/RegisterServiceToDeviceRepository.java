@@ -1,6 +1,5 @@
 package com.ninjarmm.repositories;
 
-import com.ninjarmm.entities.Bill;
 import com.ninjarmm.entities.ServiceDevice;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
