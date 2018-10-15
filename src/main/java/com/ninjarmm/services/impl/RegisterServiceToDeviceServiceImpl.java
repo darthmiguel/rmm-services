@@ -39,7 +39,7 @@ public class RegisterServiceToDeviceServiceImpl implements RegisterServiceToDevi
   }
 
   @Override
-  public ServiceResponse addService(ServiceDeviceContext serviceDeviceContext) throws ServiceException {
+  public ServiceResponse addService(ServiceDeviceBody serviceDeviceContext) throws ServiceException {
     if(serviceDeviceContext.getDevice() == null || serviceDeviceContext.getService() == null){
       throw new ServiceException("Please provide all the fields: 'device' and 'service'");
     }

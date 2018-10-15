@@ -9,7 +9,7 @@ public interface RegisterServiceToDeviceService {
 
   List<RegisteredServicesResponse> getServices(String login) throws ServiceException;
 
-  ServiceResponse addService(ServiceDeviceContext service) throws ServiceException;
+  ServiceResponse addService(ServiceDeviceBody service) throws ServiceException;
 
   boolean delete(Long id) throws ServiceException;
 

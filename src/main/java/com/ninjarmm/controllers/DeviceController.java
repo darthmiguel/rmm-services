@@ -42,10 +42,10 @@ public class DeviceController {
   private DeviceRepository deviceRepository;
 
   @RequestMapping(value = "/{login}/getDevices", method = RequestMethod.GET)
-  @ApiOperation(value = "retrieve all the devices for a given login")
+  @ApiOperation(value = "Retrieve all the devices for a given username")
   @ApiResponses({ @ApiResponse(code = 200, message = "Device(s) retrieved") })
-  public ResponseEntity<?> getByLogin(
-    @ApiParam(value = "username") @PathVariable("login") String login,
+  public ResponseEntity<?> getDevices(
+    @ApiParam(value = "username", required = true) @PathVariable("login") String login,
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
    ) throws DeviceException {
     //check if the user its working with its own data
@@ -65,11 +65,11 @@ public class DeviceController {
   }
 
   @RequestMapping(value = "/{login}/addDevice", method = RequestMethod.POST)
-  @ApiOperation(value = "add device")
+  @ApiOperation(value = "Add device")
   @ApiResponses({ @ApiResponse(code = 200, message = "Device added") })
   public ResponseEntity<?> addDevice(
-    @ApiParam(value = "device") @RequestBody AddDeviceBody deviceContext,
-    @ApiParam(value = "username") @PathVariable("login") String login,
+    @ApiParam(value = "JSON containing device type(device_type) and the name of the device(system_name)", required = true) @RequestBody AddDeviceBody deviceContext,
+    @ApiParam(value = "username", required = true) @PathVariable("login") String login,
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
   )throws DeviceException{
     //check if the user its working with its own data
@@ -95,8 +95,8 @@ public class DeviceController {
   @ApiOperation(value = "Update device")
   @ApiResponses({ @ApiResponse(code = 200, message = "Device updated") })
   public ResponseEntity<?> updateDevice(
-    @ApiParam(value = "device") @RequestBody UpdateDeviceBody updateDeviceBody,
-    @ApiParam(value = "username") @PathVariable("login") String login,
+    @ApiParam(value = "JSON containing the id and the name(system_name) of the device", required = true) @RequestBody UpdateDeviceBody updateDeviceBody,
+    @ApiParam(value = "username", required = true) @PathVariable("login") String login,
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
   ) throws DeviceException{
     //check if the user its working with its own data
@@ -119,8 +119,8 @@ public class DeviceController {
   @ApiResponses({ @ApiResponse(code = 200, message = "Device deleted")}
   )
   public ResponseEntity<?> deleteDevice(
-    @ApiParam(value = "device id") @RequestParam(value = "id") Long id,
-    @ApiParam(value = "username") @PathVariable("login") String login,
+    @ApiParam(value = "Device id", required = true) @RequestParam(value = "id") Long id,
+    @ApiParam(value = "username", required = true) @PathVariable("login") String login,
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
   ){
     //check if the user its working with its own data

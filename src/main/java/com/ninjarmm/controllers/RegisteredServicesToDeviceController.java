@@ -31,10 +31,10 @@ public class RegisteredServicesToDeviceController {
   @Autowired DeviceRepository deviceRepository;
 
   @RequestMapping(value = "/{login}/getServices", method = RequestMethod.GET)
-  @ApiOperation(value = "retrieve all the services per device for a given login")
+  @ApiOperation(value = "Retrieve all the services per device for a given username")
   @ApiResponses({ @ApiResponse(code = 200, message = "Services per login retrieved") })
-  public ResponseEntity<?> getByLogin(
-    @ApiParam(value = "username") @PathVariable("login") String login,
+  public ResponseEntity<?> getServices(
+    @ApiParam(value = "username", required = true) @PathVariable("login") String login,
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
   ) throws ServiceException {
     //check if the user its working with its own data
@@ -52,11 +52,11 @@ public class RegisteredServicesToDeviceController {
   }
 
   @RequestMapping(value = "/{login}/addService", method = RequestMethod.POST)
-  @ApiOperation(value = "add service to a device")
+  @ApiOperation(value = "Add service to a device")
   @ApiResponses({ @ApiResponse(code = 200, message = "Services per login retrieved") })
   public ResponseEntity<?> addService(
-    @ApiParam(value = "username") @PathVariable("login") String login,
-    @ApiParam(value = "add service to a device") @RequestBody ServiceDeviceContext service,
+    @ApiParam(value = "username", required = true) @PathVariable("login") String login,
+    @ApiParam(value = "JSON containing the id of the service(service) and the id of the device(device)", required = true) @RequestBody ServiceDeviceBody service,
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
   ) throws ServiceException {
     //check if the user its working with its own data
@@ -77,8 +77,8 @@ public class RegisteredServicesToDeviceController {
   @ApiResponses({ @ApiResponse(code = 200, message = "Device deleted")}
   )
   public ResponseEntity<?> deleteDevice(
-    @ApiParam(value = "registered service id") @RequestParam(value = "id") Long id,
-    @ApiParam(value = "username") @PathVariable("login") String login,
+    @ApiParam(value = "Registered service id", required = true) @RequestParam(value = "id") Long id,
+    @ApiParam(value = "username", required = true) @PathVariable("login") String login,
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
   )throws ServiceException{
     //check if the user its working with its own data
@@ -101,7 +101,7 @@ public class RegisteredServicesToDeviceController {
   @ApiResponses({ @ApiResponse(code = 200, message = "Bill retrieved")}
   )
   public ResponseEntity<?> getBill(
-    @ApiParam(value = "username") @PathVariable("login") String login,
+    @ApiParam(value = "username", required = true) @PathVariable("login") String login,
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
   )throws ServiceException{
     //check if the user its working with its own data

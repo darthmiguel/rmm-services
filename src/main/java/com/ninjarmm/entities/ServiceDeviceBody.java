@@ -1,6 +1,6 @@
 package com.ninjarmm.entities;
 
-public class ServiceDeviceContext {
+public class ServiceDeviceBody {
 
   private Long device;
 
