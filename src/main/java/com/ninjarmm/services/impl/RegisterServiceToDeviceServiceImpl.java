@@ -81,4 +81,14 @@ public class RegisterServiceToDeviceServiceImpl implements RegisterServiceToDevi
     }
     return true;
   }
+
+  @Override
+  public BillResponse getBill(String login) throws ServiceException {
+    List<Object> rawBill = registerServiceToDeviceRepository.getBill(login);
+    List<Bill> bill = rawBill.stream().map(rb -> new Bill(rb)).collect(Collectors.toList());
+    if (bill == null || bill.size() == 0) {
+      throw new ServiceException("There are no services registered");
+    }
+    return new BillResponse(bill);
+  }
 }

@@ -95,4 +95,29 @@ public class RegisteredServicesToDeviceController {
     }
     return new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
   }
+
+  @RequestMapping(value = "/{login}/getBill", method = RequestMethod.GET)
+  @ApiOperation(value = "Gets the monthly bill")
+  @ApiResponses({ @ApiResponse(code = 200, message = "Bill retrieved")}
+  )
+  public ResponseEntity<?> getBill(
+    @ApiParam(value = "username") @PathVariable("login") String login,
+    @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
+  )throws ServiceException{
+    //check if the user its working with its own data
+    if( !principal.getName().equals(login)){
+      return new ResponseEntity<>(Constants.FORBIDDEN_MESSAGE, HttpStatus.FORBIDDEN);
+    }
+
+    BillResponse billResponse;
+    if(StringUtils.isNotEmpty(login)){
+      billResponse = registerServiceToDeviceService.getBill(login);
+    }
+    else{
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    return new ResponseEntity<>(billResponse, HttpStatus.FOUND);
+  }
+
+
 }
