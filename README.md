@@ -37,3 +37,47 @@ java -jar target/rmm-services.jar
 
 To stop the application, just press CTRL + C
 
+
+## REST Endpoints
+
+Documentation about the endpoints can be found through swagger
+
+```
+http://localhost:8080/ninjarmm-rest/api/v2/api-docs
+```
+
+To try out the endpoints
+
+```
+http://localhost:8080/ninjarmm-rest/api/swagger-ui.html
+```
+
+### Available users
+* username: emestanza, password: Erika
+* username: mmarmol, password: Miguel
+* username: ifaier, password: Iris
+
+### Device Type codes
+
+* Windows WorkStation -> 1
+* Windows Server -> 2
+* Mac -> 3
+
+### Available Services
+
+* Antivirus Windows Windows WorkStation -> 4
+* Antivirus Windows Server -> 5
+* Antivirus Mac -> 6
+* Cloudberry Windows WorkStation -> 7
+* Cloudberry Windows Server -> 8
+* Cloudberry Mac -> 9
+* PSA Windows WorkStation -> 10
+* PSA Windows Server -> 11
+* PSA Mac -> 12
+* TeamViewer Windows WorkStation -> 13
+* TeamViewer Windows Server -> 14
+* TeamViewer Mac -> 15
+
+
+
+
