@@ -5,9 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class DeviceResponse {
 
   public DeviceResponse(Device device){
+    this.id = device.getId();
     this.systemName = device.getSystemName();
     this.deviceType = device.getDeviceType();
   }
+
+  private Long id;
 
   @JsonProperty("system_name")
   private String systemName;
@@ -29,5 +32,13 @@ public class DeviceResponse {
 
   public void setDeviceType(DeviceType deviceType) {
     this.deviceType = deviceType;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 }
