@@ -15,7 +15,7 @@
   <properties>
     <java.version>1.8</java.version>
     <tomcat.version>8.5.12</tomcat.version>
-    <springfox-releaseVersion>2.8.0</springfox-releaseVersion>
+    <springfox-releaseVersion>2.9.2</springfox-releaseVersion>
     <springboot-releaseVersion>1.5.2.RELEASE</springboot-releaseVersion>
     <springintegration-releaseVersion>4.3.8.RELEASE</springintegration-releaseVersion>
     <spring-security.version>4.2.2.RELEASE</spring-security.version>
@@ -73,6 +73,11 @@
       <version>42.1.4</version>
     </dependency>
     <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>io.springfox</groupId>
       <artifactId>springfox-swagger-ui</artifactId>
       <version>${springfox-releaseVersion}</version>
@@ -88,6 +93,12 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>${springboot-releaseVersion}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <build>

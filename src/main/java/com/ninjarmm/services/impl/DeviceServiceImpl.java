@@ -6,6 +6,7 @@ import com.ninjarmm.exceptions.DeviceException;
 import com.ninjarmm.repositories.*;
 import com.ninjarmm.services.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -87,8 +88,11 @@ public class DeviceServiceImpl implements DeviceService {
   }
 
   @Override
-  public boolean delete(Long id){
-    deviceRepository.delete(id);
-    return true;
+  public void delete(Long id) throws DeviceException{
+    try{
+      deviceRepository.delete(id);
+    }catch (EmptyResultDataAccessException e){
+      throw new DeviceException("The device with id " + id + " does not exist");
+    }
   }
 }

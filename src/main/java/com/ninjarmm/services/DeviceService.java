@@ -15,6 +15,6 @@ public interface DeviceService {
 
   DeviceResponse update(UpdateDeviceBody updateDeviceBody) throws DeviceException;
 
-  boolean delete(Long id);
+  void delete(Long id) throws DeviceException;
 
 }

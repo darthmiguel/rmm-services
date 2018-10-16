@@ -1,8 +1,8 @@
 package com.ninjarmm.controllers;
 
 import com.ninjarmm.Constants;
-import com.ninjarmm.entities.Device;
 import com.ninjarmm.entities.AddDeviceBody;
+import com.ninjarmm.entities.Device;
 import com.ninjarmm.entities.DeviceResponse;
 import com.ninjarmm.entities.UpdateDeviceBody;
 import com.ninjarmm.exceptions.DeviceException;
@@ -49,7 +49,7 @@ public class DeviceController {
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
    ) throws DeviceException {
     //check if the user its working with its own data
-    if( !principal.getName().equals(login)) {
+    if(principal != null && !principal.getName().equals(login)) {
       return new ResponseEntity<>(Constants.FORBIDDEN_MESSAGE, HttpStatus.FORBIDDEN);
     }
 
@@ -73,22 +73,19 @@ public class DeviceController {
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
   )throws DeviceException{
     //check if the user its working with its own data
-    if( !principal.getName().equals(login)) {
+    if(principal != null && !principal.getName().equals(login)) {
       return new ResponseEntity<>(Constants.FORBIDDEN_MESSAGE, HttpStatus.FORBIDDEN);
     }
 
     //adds the device
     DeviceResponse device;
     try{
-      device =deviceService.save(deviceContext, login);
+      device = deviceService.save(deviceContext, login);
     }
     catch (Exception e){
       throw new DeviceException("The device '" + deviceContext.getSystemName() + "' has already been added");
     }
-    if(device != null){
-      return new ResponseEntity<>(device, HttpStatus.CREATED);
-    }
-    return new ResponseEntity<>(deviceContext, HttpStatus.NOT_MODIFIED);
+    return new ResponseEntity<>(device, HttpStatus.CREATED);
   }
 
   @RequestMapping(value = "/{login}/updateDevice", method = RequestMethod.PUT)
@@ -101,17 +98,14 @@ public class DeviceController {
   ) throws DeviceException{
     //check if the user its working with its own data
     Device found = deviceRepository.findById(updateDeviceBody.getId());
-    if(found != null &&
+    if(found != null && principal != null &&
       !(found.getCustomer().getLogin().equals(login) && principal.getName().equals(login))){
       return new ResponseEntity<>(Constants.FORBIDDEN_MESSAGE, HttpStatus.FORBIDDEN);
     }
 
     //updates the device
     DeviceResponse updatedDevice = deviceService.update(updateDeviceBody);
-    if(updatedDevice != null){
-      return new ResponseEntity<>(updatedDevice, HttpStatus.OK);
-    }
-    return new ResponseEntity<>(updateDeviceBody, HttpStatus.NOT_MODIFIED);
+    return new ResponseEntity<>(updatedDevice, HttpStatus.OK);
   }
 
   @RequestMapping(value = "/{login}/deleteDevice", method = RequestMethod.DELETE)
@@ -122,19 +116,16 @@ public class DeviceController {
     @ApiParam(value = "Device id", required = true) @RequestParam(value = "id") Long id,
     @ApiParam(value = "username", required = true) @PathVariable("login") String login,
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
-  ){
+  ) throws DeviceException{
     //check if the user its working with its own data
     Device found = deviceRepository.findById(id);
-    if(found != null &&
+    if(found != null && principal != null &&
       !(found.getCustomer().getLogin().equals(login) && principal.getName().equals(login))){
       return new ResponseEntity<>(Constants.FORBIDDEN_MESSAGE, HttpStatus.FORBIDDEN);
     }
 
     //removes the device
-    boolean result = deviceService.delete(id);
-    if(result){
-      return new ResponseEntity<>("The device with id " + id + " has been removed", HttpStatus.OK);
-    }
-    return new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
+    deviceService.delete(id);
+    return new ResponseEntity<>("The device with id " + id + " has been removed", HttpStatus.OK);
   }
 }

@@ -29,9 +29,9 @@ public class Customer {
   private String name;
 
   @Column(name = "enabled", nullable = false)
-  private boolean enabled;
+  private Boolean enabled;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
@@ -63,11 +63,19 @@ public class Customer {
     this.name = name;
   }
 
-  public boolean isEnabled() {
+  public Boolean isEnabled() {
     return enabled;
   }
 
-  public void setEnabled(boolean enabled) {
+  public void setEnabled(Boolean enabled) {
     this.enabled = enabled;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    Customer customer = (Customer) obj;
+    return customer.getId().equals(getId()) && customer.isEnabled().equals(isEnabled())
+      && customer.getLogin().equals(getLogin()) && customer.getName().equals(getName())
+      && customer.getPassword().equals(getPassword());
   }
 }

@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 public class RegisterServiceToDeviceServiceImpl implements RegisterServiceToDeviceService {
 
   @Autowired
-  DeviceRepository deviceRepository;
+  private DeviceRepository deviceRepository;
 
   @Autowired
-  ServiceRepository serviceRepository;
+  private ServiceRepository serviceRepository;
 
   @Autowired
-  RegisterServiceToDeviceRepository registerServiceToDeviceRepository;
+  private RegisterServiceToDeviceRepository registerServiceToDeviceRepository;
 
   @Override
   public List<RegisteredServicesResponse> getServices(String login) throws ServiceException {
@@ -68,7 +68,7 @@ public class RegisterServiceToDeviceServiceImpl implements RegisterServiceToDevi
   }
 
   @Override
-  public boolean delete(ServiceDeviceBody serviceDeviceBody) throws ServiceException{
+  public void delete(ServiceDeviceBody serviceDeviceBody) throws ServiceException{
     ServiceDevice registeredService = registerServiceToDeviceRepository.findByServiceDevice(serviceDeviceBody.getService(), serviceDeviceBody.getDevice());
     if(registeredService != null && registeredService.getService().getServiceType().getId().equals(Constants.SERVICE_TYPE_DEVICE)){
       throw new ServiceException("It is not possible to remove the monthly cost of the device");
@@ -76,13 +76,7 @@ public class RegisterServiceToDeviceServiceImpl implements RegisterServiceToDevi
     if(registeredService == null){
       throw new ServiceException("Service not found for the device");
     }
-    try{
-      registerServiceToDeviceRepository.delete(registeredService);
-    }
-    catch (EmptyResultDataAccessException e){
-      throw new ServiceException("The registered service does not exist");
-    }
-    return true;
+    registerServiceToDeviceRepository.delete(registeredService);
   }
 
   @Override

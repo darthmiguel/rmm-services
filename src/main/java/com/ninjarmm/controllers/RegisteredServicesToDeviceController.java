@@ -28,7 +28,8 @@ public class RegisteredServicesToDeviceController {
   @Autowired
   private RegisterServiceToDeviceService registerServiceToDeviceService;
 
-  @Autowired DeviceRepository deviceRepository;
+  @Autowired
+  private DeviceRepository deviceRepository;
 
   @RequestMapping(value = "/{login}/getServices", method = RequestMethod.GET)
   @ApiOperation(value = "Retrieve all the services per device for a given username")
@@ -38,7 +39,7 @@ public class RegisteredServicesToDeviceController {
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
   ) throws ServiceException {
     //check if the user its working with its own data
-    if( !principal.getName().equals(login)) {
+    if(principal!= null && !principal.getName().equals(login)) {
       return new ResponseEntity<>(Constants.FORBIDDEN_MESSAGE, HttpStatus.FORBIDDEN);
     }
     List<RegisteredServicesResponse> registeredServices;
@@ -61,15 +62,12 @@ public class RegisteredServicesToDeviceController {
   ) throws ServiceException {
     //check if the user its working with its own data
     Device found = deviceRepository.findById(service.getDevice());
-    if(found != null &&
+    if(found != null && principal != null &&
       !(found.getCustomer().getLogin().equals(login) && principal.getName().equals(login))){
       return new ResponseEntity<>(Constants.FORBIDDEN_MESSAGE, HttpStatus.FORBIDDEN);
     }
     ServiceResponse availableServiceDevice = registerServiceToDeviceService.addService(service);
-    if(availableServiceDevice != null){
-      return new ResponseEntity<>(availableServiceDevice, HttpStatus.CREATED);
-    }
-    return new ResponseEntity<>(service, HttpStatus.NOT_MODIFIED);
+    return new ResponseEntity<>(availableServiceDevice, HttpStatus.CREATED);
   }
 
   @RequestMapping(value = "/{login}/deleteService", method = RequestMethod.DELETE)
@@ -80,20 +78,17 @@ public class RegisteredServicesToDeviceController {
     @ApiParam(value = "JSON containing the id of the service(service) and the id of the device(device)", required = true) @RequestBody ServiceDeviceBody serviceDeviceBody,
     @ApiParam(value = "username", required = true) @PathVariable("login") String login,
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
-  )throws ServiceException{
+  )throws ServiceException {
     //check if the user its working with its own data
     Device found = deviceRepository.findById(serviceDeviceBody.getDevice());
-    if(found != null &&
-      !(found.getCustomer().getLogin().equals(login) && principal.getName().equals(login))){
+    if (found != null && principal != null &&
+      !(found.getCustomer().getLogin().equals(login) && principal.getName().equals(login))) {
       return new ResponseEntity<>(Constants.FORBIDDEN_MESSAGE, HttpStatus.FORBIDDEN);
     }
 
     //removes the device
-    boolean result = registerServiceToDeviceService.delete(serviceDeviceBody);
-    if(result){
-      return new ResponseEntity<>("The service has been removed from the device", HttpStatus.OK);
-    }
-    return new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
+    registerServiceToDeviceService.delete(serviceDeviceBody);
+    return new ResponseEntity<>("The service has been removed from the device", HttpStatus.OK);
   }
 
   @RequestMapping(value = "/{login}/getBill", method = RequestMethod.GET)
@@ -105,7 +100,7 @@ public class RegisteredServicesToDeviceController {
     @ApiParam(value = "authenticated user") @AuthenticationPrincipal Principal principal
   )throws ServiceException{
     //check if the user its working with its own data
-    if( !principal.getName().equals(login)){
+    if(principal != null && !principal.getName().equals(login)){
       return new ResponseEntity<>(Constants.FORBIDDEN_MESSAGE, HttpStatus.FORBIDDEN);
     }
 

@@ -25,7 +25,7 @@ public class Device {
   @JsonProperty("system_name")
   private String systemName;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "device_type_id", nullable = false, referencedColumnName = "id", updatable = false)
   @JsonProperty("device_type")
   private DeviceType deviceType;

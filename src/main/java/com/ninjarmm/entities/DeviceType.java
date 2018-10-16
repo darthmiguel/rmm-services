@@ -36,4 +36,11 @@ public class DeviceType {
   public void setName(String name) {
     this.name = name;
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    DeviceType deviceType = (DeviceType) obj;
+    return deviceType.getName().equals(getName())
+      && deviceType.getId().equals(getId());
+  }
 }
