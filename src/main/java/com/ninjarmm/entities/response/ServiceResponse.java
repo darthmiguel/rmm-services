@@ -1,4 +1,6 @@
-package com.ninjarmm.entities;
+package com.ninjarmm.entities.response;
+
+import com.ninjarmm.entities.Service;
 
 public class ServiceResponse {
 

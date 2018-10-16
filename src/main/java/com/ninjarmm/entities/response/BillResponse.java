@@ -1,6 +1,7 @@
-package com.ninjarmm.entities;
+package com.ninjarmm.entities.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ninjarmm.entities.Bill;
 
 import java.util.List;
 

@@ -8,9 +8,16 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface RegisterServiceToDeviceRepository extends CrudRepository<ServiceDevice, Long>{
+
+  /**
+   * Finds a registered service given a device id and the service id
+   */
   @Query(value = "select sd from ServiceDevice sd where sd.service.id = ?1 and sd.device.id =?2")
   ServiceDevice findByServiceDevice(Long serviceId, Long deviceId);
 
+  /**
+   * Calculates the bill total and its detail
+   */
   @Query(value = "select st.name, sum(s.cost) "+
     "from service_type st, service s, service_device sd, device d, customer c " +
     "where " +

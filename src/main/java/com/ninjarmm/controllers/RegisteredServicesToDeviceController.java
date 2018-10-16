@@ -2,6 +2,10 @@ package com.ninjarmm.controllers;
 
 import com.ninjarmm.Constants;
 import com.ninjarmm.entities.*;
+import com.ninjarmm.entities.request.ServiceDeviceBody;
+import com.ninjarmm.entities.response.BillResponse;
+import com.ninjarmm.entities.response.RegisteredServicesResponse;
+import com.ninjarmm.entities.response.ServiceResponse;
 import com.ninjarmm.exceptions.ServiceException;
 import com.ninjarmm.repositories.DeviceRepository;
 import com.ninjarmm.services.RegisterServiceToDeviceService;
@@ -20,6 +24,13 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
+/***
+ * Rest Controller that allows users to manage their services on their devices
+ * getServices: List each device with its respective service list
+ * addService: Adds a service to a device
+ * deleteService: Removes a service from the device
+ * getBill: Calculates the total per service and sums up
+ */
 @Component
 @RestController
 @RequestMapping("/service")

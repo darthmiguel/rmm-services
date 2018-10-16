@@ -1,6 +1,8 @@
-package com.ninjarmm.entities;
+package com.ninjarmm.entities.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ninjarmm.entities.Device;
+import com.ninjarmm.entities.DeviceType;
 
 public class DeviceResponse {
 

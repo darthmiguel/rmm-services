@@ -1,22 +1,22 @@
-package com.ninjarmm.entities;
+package com.ninjarmm.entities.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UpdateDeviceBody {
+public class AddDeviceBody {
 
-  private Long id;
+  @JsonProperty("device_type")
+  private Integer type;
 
   @JsonProperty("system_name")
   private String systemName;
 
-  public Long getId() {
-    return id;
+  public Integer getType() {
+    return type;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setType(Integer type) {
+    this.type = type;
   }
-
   public String getSystemName() {
     return systemName;
   }
@@ -25,3 +25,4 @@ public class UpdateDeviceBody {
     this.systemName = systemName;
   }
 }
+

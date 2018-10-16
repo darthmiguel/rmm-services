@@ -2,6 +2,9 @@ package com.ninjarmm.services.impl;
 
 import com.ninjarmm.Constants;
 import com.ninjarmm.entities.*;
+import com.ninjarmm.entities.request.AddDeviceBody;
+import com.ninjarmm.entities.request.UpdateDeviceBody;
+import com.ninjarmm.entities.response.DeviceResponse;
 import com.ninjarmm.exceptions.DeviceException;
 import com.ninjarmm.repositories.*;
 import com.ninjarmm.services.DeviceService;

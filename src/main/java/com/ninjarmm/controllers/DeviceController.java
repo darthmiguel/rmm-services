@@ -1,10 +1,10 @@
 package com.ninjarmm.controllers;
 
 import com.ninjarmm.Constants;
-import com.ninjarmm.entities.AddDeviceBody;
+import com.ninjarmm.entities.request.AddDeviceBody;
 import com.ninjarmm.entities.Device;
-import com.ninjarmm.entities.DeviceResponse;
-import com.ninjarmm.entities.UpdateDeviceBody;
+import com.ninjarmm.entities.response.DeviceResponse;
+import com.ninjarmm.entities.request.UpdateDeviceBody;
 import com.ninjarmm.exceptions.DeviceException;
 import com.ninjarmm.repositories.DeviceRepository;
 import com.ninjarmm.services.DeviceService;

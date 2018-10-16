@@ -2,6 +2,10 @@ package com.ninjarmm.services.impl;
 
 import com.ninjarmm.Constants;
 import com.ninjarmm.entities.*;
+import com.ninjarmm.entities.request.ServiceDeviceBody;
+import com.ninjarmm.entities.response.BillResponse;
+import com.ninjarmm.entities.response.RegisteredServicesResponse;
+import com.ninjarmm.entities.response.ServiceResponse;
 import com.ninjarmm.exceptions.ServiceException;
 import com.ninjarmm.repositories.DeviceRepository;
 import com.ninjarmm.repositories.RegisterServiceToDeviceRepository;
@@ -9,7 +13,6 @@ import com.ninjarmm.repositories.ServiceRepository;
 import com.ninjarmm.services.RegisterServiceToDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 import java.util.stream.Collectors;

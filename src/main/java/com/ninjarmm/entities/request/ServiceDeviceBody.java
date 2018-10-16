@@ -1,4 +1,4 @@
-package com.ninjarmm.entities;
+package com.ninjarmm.entities.request;
 
 public class ServiceDeviceBody {
 

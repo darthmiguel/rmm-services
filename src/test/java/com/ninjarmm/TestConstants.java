@@ -1,8 +1,8 @@
 package com.ninjarmm;
 
-import com.ninjarmm.entities.AddDeviceBody;
-import com.ninjarmm.entities.ServiceDeviceBody;
-import com.ninjarmm.entities.UpdateDeviceBody;
+import com.ninjarmm.entities.request.AddDeviceBody;
+import com.ninjarmm.entities.request.ServiceDeviceBody;
+import com.ninjarmm.entities.request.UpdateDeviceBody;
 
 public class TestConstants {
 
