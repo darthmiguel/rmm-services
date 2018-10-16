@@ -9,7 +9,7 @@ This project relates to a Remote Monitoring and Management (RMM) company that pr
 * Java 1.8
 * Postgres 10
 
-### Init DB Script
+### Script for database and user creation
 In order to create the user and database for this project, it is necessary to execute the [script](init-db/script.sql) in the Postgres command line
 
 ```
@@ -38,6 +38,11 @@ java -jar target/rmm-services.jar
 To stop the application, just press CTRL + C
 
 
+### Init database
+
+The script that loads the initial data to the database will be executed every time the application starts.
+
+
 ## REST Endpoints
 
 Documentation about the endpoints can be found through swagger
@@ -52,6 +57,7 @@ To try out the endpoints
 http://localhost:8080/ninjarmm-rest/api/swagger-ui.html
 ```
 
+The endpoints require basic authentication with any of the users provided below.
 ### Available users
 * username: emestanza, password: Erika
 * username: mmarmol, password: Miguel
