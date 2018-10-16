@@ -27,6 +27,9 @@ public class RegisteredServicesToDeviceControllerTest {
   @Autowired
   private RegisteredServicesToDeviceController registeredServicesToDeviceController;
 
+  /***
+   * Bad request when calling getServices endpoint
+   */
   @Test
   public void getServicesBadRequest() throws Exception {
     ResponseEntity<?> responseEntity = registeredServicesToDeviceController
@@ -34,14 +37,20 @@ public class RegisteredServicesToDeviceControllerTest {
     Assert.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
   }
 
+  /***
+   * No services where found
+   */
   @Test(expected = ServiceException.class)
   public void getServicesNotFound() throws Exception {
     registeredServicesToDeviceController
       .getServices("ppanama", null);
   }
 
+  /***
+   * Retrieves all the devices and its services
+   */
   @Test
-  public void getService() throws Exception {
+  public void getServices() throws Exception {
     ResponseEntity<?> responseEntity = registeredServicesToDeviceController
       .getServices("ifaier", null);
     Assert.assertEquals(HttpStatus.FOUND, responseEntity.getStatusCode());
@@ -147,7 +156,7 @@ public class RegisteredServicesToDeviceControllerTest {
   }
 
   /**
-   * Fails to remove the service for it does not exist
+   * Fails to remove the service because it does not exist
    */
   @Test(expected = ServiceException.class)
   public void deleteServiceServiceNotFound() throws Exception {
@@ -158,6 +167,9 @@ public class RegisteredServicesToDeviceControllerTest {
       .deleteDevice(serviceDeviceBody, "ifaier",  null);
   }
 
+  /***
+   * Bad request when calling getBill endpoint
+   */
   @Test
   public void getBillBadRequest() throws Exception{
     ResponseEntity<?> responseEntity = registeredServicesToDeviceController
@@ -165,13 +177,18 @@ public class RegisteredServicesToDeviceControllerTest {
     Assert.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
   }
 
+  /***
+   * No devices registered for a given customer
+   */
   @Test(expected = ServiceException.class)
   public void getBillNoDevices() throws Exception{
     registeredServicesToDeviceController
       .getBill("ppanama", null);
   }
 
-
+  /***
+   * Bill with its details is retrieved for a given customer
+   */
   @Test
   public void getBill() throws Exception{
     ResponseEntity<?> responseEntity = registeredServicesToDeviceController

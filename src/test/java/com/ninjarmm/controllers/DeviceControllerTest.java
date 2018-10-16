@@ -25,18 +25,26 @@ public class DeviceControllerTest {
   @Autowired
   private DeviceController deviceController;
 
+  /***
+   * Bad request when calling getDevices endpoint
+   */
   @Test
   public void getDevicesBadRequest() throws Exception {
     ResponseEntity<?> responseEntity = deviceController.getDevices("", null);
     Assert.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
   }
 
-
+  /***
+   * No devices found for a given user
+   */
   @Test(expected = DeviceException.class)
   public void getDevicesNotFound() throws Exception {
     deviceController.getDevices("emestanza", null);
   }
 
+  /***
+   * Endpoint getDevices retrieves the devices for a given user
+   */
   @Test
   public void getDevices () throws Exception {
     ResponseEntity<?> responseEntity = deviceController.getDevices("mmarmol", null);
@@ -46,6 +54,9 @@ public class DeviceControllerTest {
     Assert.assertEquals("Device Test", deviceResponseList.get(0).getSystemName());
   }
 
+  /***
+   * Correctly updates device's name
+   */
   @Test
   public void updateDevice() throws Exception {
     ResponseEntity<?> responseEntity = deviceController
@@ -56,7 +67,9 @@ public class DeviceControllerTest {
     Assert.assertEquals(TestConstants.getUpdateDeviceBody().getSystemName(), deviceResponse.getSystemName());
   }
 
-
+  /**
+   * The given id does not belong to any device
+   */
   @Test(expected = DeviceException.class)
   public void updateDeviceNotFound() throws Exception {
     UpdateDeviceBody updateDeviceBody = TestConstants.getUpdateDeviceBody();
@@ -64,6 +77,9 @@ public class DeviceControllerTest {
     deviceController.updateDevice(updateDeviceBody, "mmarmol", null);
   }
 
+  /**
+   * If system_name or id are null a exception is thrown
+   */
   @Test(expected = DeviceException.class)
   public void updateDeviceEmptyFields() throws Exception {
     UpdateDeviceBody updateDeviceBody = TestConstants.getUpdateDeviceBody();
@@ -71,33 +87,52 @@ public class DeviceControllerTest {
     deviceController.updateDevice(updateDeviceBody, "mmarmol", null);
   }
 
+  /***
+   * Device was not removed because its id does not belong to any existing record
+   */
   @Test(expected = DeviceException.class)
   public void deleteDeviceNotFound() throws Exception{
     deviceController.deleteDevice(122L, "mmarmol", null);
   }
 
+  /***
+   * Correctly removes a device given its id
+   */
   @Test
   public void deleteDevice() throws Exception{
     ResponseEntity<?> responseEntity = deviceController.deleteDevice(101L, "emestanza", null);
     Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
   }
 
+  /***
+   * Cannot add a device with the same name and type
+   */
   @Test(expected = DeviceException.class)
   public void addDuplicateDevice() throws Exception{
     deviceController.addDevice(TestConstants.getAddDeviceBody(), "ifaier", null);
   }
 
+  /***
+   * The customer was not found
+   */
   @Test(expected = DeviceException.class)
   public void addDeviceCustomerNotFound() throws Exception{
     deviceController.addDevice(TestConstants.getAddDeviceBody(), "testUser", null);
   }
 
+  /***
+   * the device type does not exist
+   */
   @Test(expected = DeviceException.class)
   public void addDeviceDeviceTypeNotFound() throws Exception{
     AddDeviceBody addDeviceBody = TestConstants.getAddDeviceBody();
     addDeviceBody.setType(10);
     deviceController.addDevice(addDeviceBody, "mmarmol", null);
   }
+
+  /***
+   * Device's name is mandatory
+   */
   @Test(expected = DeviceException.class)
   public void addDeviceSystemNameNull() throws Exception{
     AddDeviceBody addDeviceBody = TestConstants.getAddDeviceBody();
@@ -105,6 +140,9 @@ public class DeviceControllerTest {
     deviceController.addDevice(addDeviceBody, "mmarmol", null);
   }
 
+  /***
+   * Correctly adds a device to a customer
+   */
   @Test
   public void addDevice() throws Exception{
     AddDeviceBody addDeviceBody = TestConstants.getAddDeviceBody();
