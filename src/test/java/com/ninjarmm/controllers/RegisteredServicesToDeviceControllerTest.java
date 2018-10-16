@@ -1,6 +1,7 @@
 package com.ninjarmm.controllers;
 
 import com.ninjarmm.TestConstants;
+import com.ninjarmm.entities.Bill;
 import com.ninjarmm.entities.request.ServiceDeviceBody;
 import com.ninjarmm.entities.response.BillResponse;
 import com.ninjarmm.entities.response.RegisteredServicesResponse;
@@ -178,6 +179,22 @@ public class RegisteredServicesToDeviceControllerTest {
     Assert.assertEquals(HttpStatus.FOUND, responseEntity.getStatusCode());
     BillResponse billResponse = (BillResponse) responseEntity.getBody();
     Assert.assertEquals(71.0, billResponse.getTotal(), 0.01);
+    for(Bill bill : billResponse.getBillList()){
+      switch (bill.getServiceName()) {
+        case "Device":
+          Assert.assertEquals(20, bill.getSubtotal(), 0.01);
+          break;
+        case "Antivirus":
+          Assert.assertEquals(31, bill.getSubtotal(), 0.01);
+          break;
+        case "Cloudberry":
+          Assert.assertEquals(15, bill.getSubtotal(), 0.01);
+          break;
+        case "TeamViewer":
+          Assert.assertEquals(5, bill.getSubtotal(), 0.01);
+          break;
+      }
+    }
   }
 
 }
